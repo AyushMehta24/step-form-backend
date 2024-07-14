@@ -1,0 +1,132 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      ="mysql://root:root@localhost:3306/stepform"
+}
+
+model BasicDetails {
+  id           Int      @id @default(autoincrement())
+  fname        String
+  lname        String
+  designation  String
+  address1     String
+  address2     String
+  city         String
+  state        String
+  email        String   @unique
+  password     String
+  contact      String
+  gender       String
+  relationship String
+  dob          DateTime @db.Date
+  pincode      String
+
+  Education       EducationDetails[]
+  Language        LanguageKnown[]
+  Preferences     Preferences[]
+  References      Reference[]
+  TechnologyKnown TechnologyKnown[]
+  WorkExperience  WorkExperience[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+  isDeleted Boolean   @default(false)
+}
+
+model EducationDetails {
+  id         Int      @id @default(autoincrement())
+  courseName String?
+  school     String?
+  year       DateTime @db.Date
+  percentage String
+
+  basicDetails   BasicDetails @relation(fields: [basicDetailsId], references: [id])
+  basicDetailsId Int
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+  isDeleted Boolean   @default(false)
+}
+
+model LanguageKnown {
+  id            Int     @id @default(autoincrement())
+  languageName  String
+  languageRead  Boolean
+  languageWrite Boolean
+  languageSpeak Boolean
+
+  basicDetails   BasicDetails @relation(fields: [basicDetailsId], references: [id])
+  basicDetailsId Int
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+  isDeleted Boolean   @default(false)
+}
+
+model Preferences {
+  id           Int    @id @default(autoincrement())
+  location     String
+  noticePeriod Int
+  expectedCtc  String
+  currentCtc   String
+  department   String
+
+  basicDetails   BasicDetails @relation(fields: [basicDetailsId], references: [id])
+  basicDetailsId Int
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+  isDeleted Boolean   @default(false)
+}
+
+model Reference {
+  id          Int    @id @default(autoincrement())
+  refName     String
+  refContact  String
+  refRelation String
+
+  basicDetails   BasicDetails @relation(fields: [basicDetailsId], references: [id])
+  basicDetailsId Int
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+  isDeleted Boolean   @default(false)
+}
+
+model TechnologyKnown {
+  id             Int    @id @default(autoincrement())
+  technologyName String
+  skillLevel     String
+
+  basicDetails   BasicDetails @relation(fields: [basicDetailsId], references: [id])
+  basicDetailsId Int
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+  isDeleted Boolean   @default(false)
+}
+
+model WorkExperience {
+  id          Int      @id @default(autoincrement())
+  companyName String
+  designation String
+  from        DateTime @db.Date
+  to          DateTime @db.Date
+
+  basicDetails   BasicDetails @relation(fields: [basicDetailsId], references: [id])
+  basicDetailsId Int
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+  isDeleted Boolean   @default(false)
+}
